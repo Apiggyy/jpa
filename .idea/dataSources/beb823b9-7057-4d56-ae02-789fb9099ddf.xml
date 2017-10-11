@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="jpa@localhost">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="4.3">
+    <root id="1"/>
+    <schema id="2" parent="1" name="jpa">
+      <Current>1</Current>
+      <Visible>1</Visible>
+    </schema>
+    <schema id="3" parent="1" name="activiti"/>
+    <schema id="4" parent="1" name="apiggydb"/>
+    <schema id="5" parent="1" name="eclsp"/>
+    <schema id="6" parent="1" name="es"/>
+    <schema id="7" parent="1" name="hibernate"/>
+    <schema id="8" parent="1" name="information_schema"/>
+    <schema id="9" parent="1" name="maildb"/>
+    <schema id="10" parent="1" name="mysql"/>
+    <schema id="11" parent="1" name="quartz"/>
+    <schema id="12" parent="1" name="shiro"/>
+    <schema id="13" parent="1" name="springdata"/>
+    <schema id="14" parent="1" name="test"/>
+    <table id="15" parent="2" name="customers"/>
+    <table id="16" parent="2" name="orders"/>
+    <column id="17" parent="15" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="18" parent="15" name="age">
+      <Position>2</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="19" parent="15" name="birth">
+      <Position>3</Position>
+      <DataType>date|0</DataType>
+    </column>
+    <column id="20" parent="15" name="createTime">
+      <Position>4</Position>
+      <DataType>datetime|0</DataType>
+    </column>
+    <column id="21" parent="15" name="email">
+      <Position>5</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="22" parent="15" name="last_name">
+      <Position>6</Position>
+      <DataType>varchar(50)|0</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <key id="23" parent="15" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="24" parent="16" name="id">
+      <Position>1</Position>
+      <DataType>int(11)|0</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+    </column>
+    <column id="25" parent="16" name="order_name">
+      <Position>2</Position>
+      <DataType>varchar(255)|0</DataType>
+    </column>
+    <column id="26" parent="16" name="customer_id">
+      <Position>3</Position>
+      <DataType>int(11)|0</DataType>
+    </column>
+    <index id="27" parent="16" name="FK_astys1dv61mdlp0n0wx0574r2">
+      <ColNames>customer_id</ColNames>
+    </index>
+    <key id="28" parent="16" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <foreign-key id="29" parent="16" name="FK_astys1dv61mdlp0n0wx0574r2">
+      <ColNames>customer_id</ColNames>
+      <RefSchemaName>jpa</RefSchemaName>
+      <RefTableName>customers</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+  </database-model>
+</dataSource>
