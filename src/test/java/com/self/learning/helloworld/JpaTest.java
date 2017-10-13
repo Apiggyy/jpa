@@ -4,11 +4,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 public class JpaTest {
 
@@ -29,6 +27,122 @@ public class JpaTest {
         entityTransaction.commit();
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    @Test
+    public void testFunction() {
+        String jpql = "select upper(c.email) from Customer c";
+        List<String> resultList = entityManager.createQuery(jpql).getResultList();
+        for (String objects : resultList) {
+            System.out.println(objects);
+        }
+    }
+
+    @Test
+    public void testSubQuery() {
+        String jpql = "from Order o where exists (from Customer c where o.customer=c and c.lastName=?)";
+        List<Order> orders = entityManager.createQuery(jpql).setParameter(1, "aa").getResultList();
+        for (Order order : orders) {
+            System.out.println(order);
+        }
+    }
+
+    @Test
+    public void testLeftOuterJoinFetch() {
+        String jpql = "from Customer c left outer join fetch c.orders where c.id = ?";
+        Customer customer = (Customer) entityManager.createQuery(jpql).setParameter(1, 1)
+                .getSingleResult();
+        System.out.println(customer.getLastName());
+    }
+
+    @Test
+    public void testGroupBy() {
+        String jpql = "select o.customer from Order o group by o.customer having count(*) > 1";
+        List<Customer> customers = entityManager.createQuery(jpql).getResultList();
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+
+    @Test
+    public void testOrderBy() {
+        List customers = entityManager.createQuery("from Customer c where c.age > ? order by c.createTime")
+                .setParameter(1, 10).getResultList();
+        for (Object customer : customers) {
+            System.out.println(customer);
+        }
+    }
+
+    @Test
+    public void testNativeQuery() {
+        String sql = "select last_name,age from customers where age > ?";
+        List<Object[]> customers = entityManager.createNativeQuery(sql).setParameter(1, 10).getResultList();
+        for (Object[] obj : customers) {
+            System.out.println("last_name:" + obj[0] + "\tage:" + obj[1]);
+        }
+    }
+
+    @Test
+    public void testNamedQuery() {
+        List<Customer> customers = entityManager.createNamedQuery("queryCustomer").setParameter(1, 10).getResultList();
+        for (Customer customer : customers) {
+            System.out.println(customer);
+        }
+    }
+
+    @Test
+    public void testPartlyProperties() {
+        String jpql = "select new Customer(c.lastName,c.age) from Customer c where c.id = ?";
+        List customers = entityManager.createQuery(jpql)
+                .setParameter(1, 3)
+                .getResultList();
+        System.out.println(customers);
+    }
+
+    @Test
+    public void testJPQL() {
+        Query query = entityManager.createQuery("from Customer c where c.age > ?");
+        List resultList = query.setParameter(1, 10).getResultList();
+        System.out.println(resultList.size());
+    }
+
+    @Test
+    public void testManyToManyFind() {
+        //Item item = entityManager.find(Item.class, 1);
+        //System.out.println(item.getItemName());
+        //System.out.println(item.getCategories().size());
+
+        Category category = entityManager.find(Category.class, 1);
+        System.out.println(category.getCategoryName());
+        System.out.println(category.getItems().size());
+    }
+
+    @Test
+    public void testManyToManyPersist() {
+        Item item1 = new Item();
+        item1.setItemName("I-aa");
+        Item item2 = new Item();
+        item2.setItemName("I-bb");
+
+        Category category1 = new Category();
+        category1.setCategoryName("C-aa");
+        Category category2 = new Category();
+        category2.setCategoryName("C-bb");
+
+        category1.getItems().add(item1);
+        category1.getItems().add(item2);
+        category2.getItems().add(item1);
+        category2.getItems().add(item2);
+
+        item1.getCategories().add(category1);
+        item1.getCategories().add(category2);
+        item2.getCategories().add(category1);
+        item2.getCategories().add(category2);
+
+        entityManager.persist(category1);
+        entityManager.persist(category2);
+        entityManager.persist(item1);
+        entityManager.persist(item2);
     }
 
     @Test

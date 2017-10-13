@@ -6,9 +6,10 @@
 
         <class>com.self.learning.helloworld.Customer</class>
         <class>com.self.learning.helloworld.Order</class>
-
         <class>com.self.learning.helloworld.Manager</class>
         <class>com.self.learning.helloworld.Department</class>
+        <class>com.self.learning.helloworld.Category</class>
+        <class>com.self.learning.helloworld.Item</class>
 
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@NamedQuery(name = "queryCustomer",query = "from Customer c where c.age > ?")
 @Table(name = "customers")
 @Entity
 public class Customer {
@@ -15,6 +16,14 @@ public class Customer {
     private Date createTime;
     private Date birth;
     private Set<Order> orders = new HashSet<Order>();
+
+    public Customer() {
+    }
+
+    public Customer(String lastName, int age) {
+        this.lastName = lastName;
+        this.age = age;
+    }
 
     //@TableGenerator(name = "id_generator",
     //        table = "id_generator",
@@ -83,7 +92,7 @@ public class Customer {
     }
 
     //@JoinColumn(name = "customer_id")
-    @OneToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REMOVE},mappedBy = "customer")
+    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE},mappedBy = "customer")
     public Set<Order> getOrders() {
         return orders;
     }
