@@ -32,6 +32,22 @@ public class JpaTest {
     }
 
     @Test
+    public void testSecondaryCache() {
+        Customer customer = entityManager.find(Customer.class, 1);
+        System.out.println(customer);
+
+        entityTransaction.commit();
+        entityManager.close();
+
+        entityManager = entityManagerFactory.createEntityManager();
+        entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Customer customer1 = entityManager.find(Customer.class, 1);
+        System.out.println(customer1);
+    }
+
+    @Test
     public void testOneToOneFind2() {
         Manager mgr = entityManager.find(Manager.class, 1);
         System.out.println(mgr.getMgrName());

@@ -10,6 +10,9 @@
         <class>com.self.learning.helloworld.Manager</class>
         <class>com.self.learning.helloworld.Department</class>
 
+        <!--配置二级缓存的策略-->
+        <shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
             <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
@@ -20,6 +23,15 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!--启用二级缓存-->
+            <property name="cache.use_second_level_cache" value="true"/>
+            <!--配置使用二级缓存的产品-->
+            <property name="hibernate.cache.region.factory_class"
+                      value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
+            <!--启用查询缓存-->
+            <property name="cache.use_query_cache" value="true"/>
+
         </properties>
     </persistence-unit>
 </persistence>
