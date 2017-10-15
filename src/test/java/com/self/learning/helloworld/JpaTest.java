@@ -4,9 +4,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
 import java.util.Date;
-import java.util.List;
 
 public class JpaTest {
 
@@ -27,6 +29,22 @@ public class JpaTest {
         entityTransaction.commit();
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    @Test
+    public void testSecondaryCache() {
+        Customer customer = entityManager.find(Customer.class, 1);
+        System.out.println(customer);
+
+        entityTransaction.commit();
+        entityManager.close();
+
+        entityManager = entityManagerFactory.createEntityManager();
+        entityTransaction = entityManager.getTransaction();
+        entityTransaction.begin();
+
+        Customer customer1 = entityManager.find(Customer.class, 1);
+        System.out.println(customer1);
     }
 
     @Test

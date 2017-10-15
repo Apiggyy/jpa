@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@NamedQuery(name = "queryCustomer",query = "from Customer c where c.age > ?")
+@Cacheable
 @Table(name = "customers")
 @Entity
 public class Customer {
@@ -92,7 +92,7 @@ public class Customer {
     }
 
     //@JoinColumn(name = "customer_id")
-    @OneToMany(fetch = FetchType.LAZY,cascade = {CascadeType.REMOVE},mappedBy = "customer")
+    @OneToMany(fetch = FetchType.EAGER,cascade = {CascadeType.REMOVE},mappedBy = "customer")
     public Set<Order> getOrders() {
         return orders;
     }
